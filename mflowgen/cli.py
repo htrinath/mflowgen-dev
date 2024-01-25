@@ -25,6 +25,9 @@
 #
 #  -p --path     string --  Path to step directory
 #
+# mflowgen pkg
+#  foo 			-- Prints Hello World!
+#
 
 #
 # Author : Christopher Torng
@@ -40,6 +43,7 @@ from mflowgen.demo      import DemoHandler
 from mflowgen.core      import RunHandler
 from mflowgen.stash     import StashHandler
 from mflowgen.mock      import MockHandler
+from mflowgen.pkg	import PkgHandler
 
 # Path hack for now to find steps and adks
 
@@ -79,7 +83,7 @@ def parse_cmdline():
   p.add_argument( "-m", "--msg"                                   )
   p.add_argument(       "--hash"                                  )
   p.add_argument(       "--all",     action="store_true"          )
-  p.add_argument(       "--verbose", action="store_true"          )
+  p.add_argument(       "--verbose", action="store_true"          )	
   opts = p.parse_args()
   if opts.help and not opts.args: p.error() # print help only if not stash
   return opts
@@ -132,6 +136,16 @@ def main():
     )
     return
 
+  # Dispatch to PkgHandler
+  
+  if opts.args and opts.args[0] == 'pkg':
+    pkgHandler = PkgHandler()
+    pkgHandler.launch(
+      args = opts.args[1:],
+      help_ = opts.help,
+    )
+    return
+
   # Dispatch to RunHandler
 
   legacy = \
@@ -151,7 +165,7 @@ def main():
   # Need arguments
 
   ArgumentParserWithCustomError().error(
-    'Command can be "mflowgen run" or "mflowgen stash" or "mflowgen mock"'
+    'Command can be "mflowgen run" or "mflowgen stash" or "mflowgen mock" or "mflowgen pkg"'
   )
 
 
