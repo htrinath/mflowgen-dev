@@ -14,10 +14,12 @@ class PkgHandler:
     p.commands = [
       'foo',
       'help',
+      'find',
+      'pull',
     ]
  
   
-  def launch( p, args, help_ ):
+  def launch( p, args, help_, wildcard ):
 
     if help_ and not args:
       p.launch_help()
@@ -40,6 +42,8 @@ class PkgHandler:
       help_ = True
 
     if   command == 'foo' : p.launch_foo( help_ )
+    elif command == 'find': p.launch_find( help_, wildcard )
+    elif command == 'pull': p.launch_pull( help_, path )
     else                  : p.launch_help()
 
 
@@ -55,9 +59,26 @@ class PkgHandler:
       return
     else: print( bold('Hello World!'))
 
+
+  def launch_find( p, help_, wildcard):
+    def print_help():
+      print()
+      print( bold( 'Usage:' ), 'mflowgen pkg find -w/--wildcard <wildcard>')
+      print()
+      print( bold( 'Example:' ), 'mflowgen pkg find -w innovus-*')
+      print()
+   
+    if help_ or not wildcard:
+      print_help()
+      return
+    else: os.system(f"find $HOME -type d -iname {wildcard}")
+
+
   def launch_help( p ):
     print()
     print( bold( 'Package Commands' ) )
     print()
     print( bold( ' foo :' ), 'Prints', bold('Hello World!')   )
+    print()
+    print( bold( ' find :'), 'Finds the directories specified by the entered wildcard')
     print()  

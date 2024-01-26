@@ -27,6 +27,8 @@
 #
 # mflowgen pkg
 #  foo 			-- Prints Hello World!
+#  find			-- Finds the node with the mentioned wildcard
+#  -w --wildcard	-- Wildcard to find the nodes corresponding to it 
 #
 
 #
@@ -83,7 +85,10 @@ def parse_cmdline():
   p.add_argument( "-m", "--msg"                                   )
   p.add_argument(       "--hash"                                  )
   p.add_argument(       "--all",     action="store_true"          )
-  p.add_argument(       "--verbose", action="store_true"          )	
+  p.add_argument(       "--verbose", action="store_true"          )
+  
+  # Package-related arguments
+  p.add_argument( "-w", "--wildcard"				  )	
   opts = p.parse_args()
   if opts.help and not opts.args: p.error() # print help only if not stash
   return opts
@@ -143,6 +148,7 @@ def main():
     pkgHandler.launch(
       args = opts.args[1:],
       help_ = opts.help,
+      wildcard = opts.wildcard,
     )
     return
 
