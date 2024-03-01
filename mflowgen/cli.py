@@ -28,7 +28,9 @@
 # mflowgen pkg
 #  foo 			-- Prints Hello World!
 #  find			-- Finds the node with the mentioned wildcard
-#  -w --wildcard	-- Wildcard to find the nodes corresponding to it 
+#  pull			-- Pulls and links the found nodes into the provided destination path
+#  -w --wildcard	-- Wildcard to find the nodes corresponding to it
+#  -f --force -- Updates the repo forcibly 
 #
 
 #
@@ -88,7 +90,8 @@ def parse_cmdline():
   p.add_argument(       "--verbose", action="store_true"          )
   
   # Package-related arguments
-  p.add_argument( "-w", "--wildcard"				  )	
+  p.add_argument( "-w", "--wildcard"				  )
+  p.add_argument( "-f", "--force"             )	
   opts = p.parse_args()
   if opts.help and not opts.args: p.error() # print help only if not stash
   return opts
@@ -149,6 +152,7 @@ def main():
       args = opts.args[1:],
       help_ = opts.help,
       wildcard = opts.wildcard,
+      force = opts.force,
     )
     return
 
